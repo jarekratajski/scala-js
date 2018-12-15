@@ -10,6 +10,8 @@ libraryDependencies += "com.google.javascript" % "closure-compiler" % "v20160517
 
 libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit.pgm" % "3.2.0.201312181205-r"
 
+libraryDependencies += "com.eed3si9n" %%  "sjson-new-scalajson" % "0.8.0"
+
 unmanagedSourceDirectories in Compile ++= {
   val root = baseDirectory.value.getParentFile
   Seq(

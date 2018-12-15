@@ -68,4 +68,6 @@ private[sbtplugin] object SBTCompat {
       incOptions.externalHooks.withExternalClassFileManager(sjsirFileManager)
     incOptions.withExternalHooks(newExternalHooks)
   }
+
+  val moduleInitializerSerialization = sjsonnew.BasicJsonProtocol.seqFormat(JSONSerializer.moduleInitializerFormat)
 }

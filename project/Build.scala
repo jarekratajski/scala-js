@@ -3,7 +3,6 @@ package build
 import scala.language.implicitConversions
 
 import scala.annotation.tailrec
-
 import sbt._
 import Keys._
 
@@ -838,6 +837,7 @@ object Build {
       mimaBinaryIssueFilters ++= BinaryIncompatibilities.SbtPlugin,
 
       addSbtPlugin("org.portable-scala" % "sbt-platform-deps" % "1.0.0"),
+     libraryDependencies += "com.eed3si9n" %%  "sjson-new-scalajson" % "0.8.0",
 
       // Add API mappings for sbt (seems they don't export their API URL)
       apiMappings ++= {

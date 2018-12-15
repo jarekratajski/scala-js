@@ -191,9 +191,16 @@ private[sbtplugin] object ScalaJSPluginInternal {
           val log = s.log
           val realFiles = irInfo.get(scalaJSSourceFiles).get
           val ir = irInfo.data
+          val linkerInfo = scalaJSLinkerConfig.value
+          val initializersInfo: Seq[ModuleInitializer] = scalaJSModuleInitializers.value
+          val prevJSModuleInitializers = scalaJSModuleInitializers.previous(SBTCompat.moduleInitializerSerialization)
+          //val linkerPrevCfgInfo = scalaJSLinkerConfig.previous
+          log.info(s"prevJSLinkerConfig: $prevJSModuleInitializers")
+          log.info(s"scalaJSLinkerConfig: $linkerInfo")
+          log.info(s"scalaJSModuleInitializers: $initializersInfo")
+          log.info(s"scalaJSModuleInitializersSize: ${initializersInfo.length}")
 
-          FileFunction.cached(s.cacheDirectory, FilesInfo.lastModified,
-              FilesInfo.exists) { _ => // We don't need the files
+          val action:  Set[File] => Set[File] = { _ => // We don't need the files
 
             val stageName = stage match {
               case Stage.FastOpt => "Fast"
@@ -218,7 +225,16 @@ private[sbtplugin] object ScalaJSPluginInternal {
             logIRCacheStats(log)
 
             Set(output, sourceMapFile)
-          } (realFiles.toSet)
+          }
+
+          if ( prevJSModuleInitializers == Some(initializersInfo)) {
+            log.info("action: std compile")
+            FileFunction.cached(s.cacheDirectory, FilesInfo.lastModified,
+              FilesInfo.exists)(action)(realFiles.toSet)
+          } else {
+            log.info("action: full compile")
+             action(realFiles.toSet)
+          }
 
           Attributed.blank(output).put(scalaJSSourceMap, sourceMapFile)
         }.tag(usesLinkerTag)

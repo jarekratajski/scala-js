@@ -31,11 +31,11 @@ sealed abstract class ModuleInitializer
 
 /** Factory for [[ModuleInitializer]]s. */
 object ModuleInitializer {
-  private[linker] final case class VoidMainMethod(moduleClassName: String,
+  private[scalajs] final case class VoidMainMethod(moduleClassName: String,
       encodedMainMethodName: String)
       extends ModuleInitializer
 
-  private[linker] final case class MainMethodWithArgs(moduleClassName: String,
+  private[scalajs] final case class MainMethodWithArgs(moduleClassName: String,
       encodedMainMethodName: String, args: List[String])
       extends ModuleInitializer
 
@@ -104,4 +104,7 @@ object ModuleInitializer {
     }
     factory.multiple(requirements: _*)
   }
+
 }
+
+

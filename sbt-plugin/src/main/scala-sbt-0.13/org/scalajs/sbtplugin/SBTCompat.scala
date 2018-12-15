@@ -61,4 +61,6 @@ private[sbtplugin] object SBTCompat {
     }
     incOptions.withNewClassfileManager(newClassfileManager)
   }
+
+  val moduleInitializerSerialization = BinarySerializers.ModulesInitializerFormat
 }
